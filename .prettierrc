@@ -1,0 +1,33 @@
+{
+  "arrowParens": "always",
+  "bracketSameLine": true,
+  "bracketSpacing": true,
+  "embeddedLanguageFormatting": "auto",
+  "htmlWhitespaceSensitivity": "ignore",
+  "jsxSingleQuote": true,
+  "plugins": ["prettier-plugin-jinja-template", "prettier-plugin-organize-attributes", "prettier-plugin-tailwindcss"],
+  "printWidth": 119,
+  "proseWrap": "preserve",
+  "semi": false,
+  "singleAttributePerLine": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "none",
+  "useTabs": false,
+  "overrides": [
+    {
+      "files": ["*.html"],
+      "options": {
+        "parser": "jinja-template"
+      }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ],
+  "attributeGroups": ["$DEFAULT", "^data-", "^hx-", "^x-", "^@"],
+  "attributeSort": "ASC"
+}

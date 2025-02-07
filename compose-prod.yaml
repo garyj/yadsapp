@@ -1,0 +1,42 @@
+# Compose file that tries to get closer to what the settings would be like in production
+# For example we use vite build to build the frontend and then serve it with white noise
+name: yads-prod
+
+services:
+  web: &django
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: ${TARGET_ENV:-production}
+    image: yads/web-prod
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/yads
+      - DEBUG=True
+      - DJANGO_SETTINGS_MODULE=config.settings.local
+      - SECRET_KEY=not_so_secret
+      - USE_VITE=False
+    env_file:
+      - .env
+    ports:
+      - ${APP_PORTS:-8000:8000}
+    extra_hosts:
+      - 'yads.local:127.0.0.1'
+    command: >
+      bash -c "python manage.py collectstatic --noinput -v 3
+      && python manage.py migrate
+      && /start"
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=yads
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./tmp:/backups
+
+volumes:
+  postgres_data:

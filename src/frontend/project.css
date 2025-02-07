@@ -1,0 +1,3 @@
+@import 'tailwindcss';
+
+@source "../templates"; /* direct tailwind to the templates folder to look for class names*/

@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Debug Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "purpose": ["debug-test"],
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "env": {
+        "PYTEST_XDIST_AUTO_NUM_WORKERS": "1"
+      },
+      "autoReload": {
+        "enable": true
+      }
+    },
+    {
+      "name": "Attach Container Django",
+      "type": "debugpy",
+      "request": "attach",
+      "connect": {
+        "host": "localhost",
+        "port": 5678
+      },
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}/src",
+          "remoteRoot": "/app"
+        }
+      ],
+      "justMyCode": false
+    }
+  ]
+}

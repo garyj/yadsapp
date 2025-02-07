@@ -1,6 +1,20 @@
-.*
-docker/docker-compose.yml
-docker/Dockerfile
-.venv
-justfile
-tests
+### Ignore Everything
+**/*
+
+# Add back only what you need
+!packages
+!pyproject.toml
+!src
+!uv.lock
+!vite.config.js
+
+# Start Scripts
+!docker/
+!docker/entrypoint
+!docker/local/start
+!docker/production/start
+
+# Node Stuff
+!package.json
+!package-lock.json
+!vite.config.js

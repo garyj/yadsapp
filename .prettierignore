@@ -1,0 +1,9 @@
+# specifcially for formatting HTML files (Django Templates) Biome formats Javascript
+.git
+.pytest_cache
+.ruff_cache
+.venv
+**/*.js
+**/*.md
+package-lock.json
+templates/django

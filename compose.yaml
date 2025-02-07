@@ -1,0 +1,54 @@
+name: yads-dev
+services:
+  web: &django
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: ${TARGET_ENV:-development}
+    image: yads/web
+    volumes:
+      - ./src:/app:z
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/yads
+      - DEBUG=True
+      - DJANGO_SETTINGS_MODULE=config.settings.local
+      - SECRET_KEY=not_so_secret
+      - USE_VITE=True
+    env_file:
+      - .env
+    ports:
+      - ${APP_PORTS:-8000:8000}
+      - ${DEBUG_PORTS:-5678:5678}
+    extra_hosts:
+      - 'yads.local:127.0.0.1'
+    command: /start
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_DB=yads
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+      - ./tmp:/backups
+
+  vite: # match `host` in compose.yaml
+    build:
+      context: .
+      dockerfile: ./docker/local/vite/Dockerfile
+    image: yads/vite
+    command: npm run dev
+    ports:
+      - '5173:5173'
+    volumes:
+      - './vite.config.js:/app/vite.config.js'
+      - './package.json:/app/package.json'
+      - './package-lock.json:/app/package-lock.json'
+      - './src:/app/src'
+      # - './node_modules:/app/node_modules'
+
+volumes:
+  postgres_data:

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+# echo "----------------------------- DEBUGGER & RUNSERVER -----------------------------"
+# python -m debugpy --listen 0.0.0.0:5678 manage.py runserver 0.0.0.0:8000
+
+echo "----------------------------- DEBUGGER & UVICORN -----------------------------"
+python -Xfrozen_modules=off -m debugpy --listen 0.0.0.0:5678 -m \
+    uvicorn \
+    --reload \
+    --lifespan off \
+    config.asgi:application --host 0.0.0.0 --port 8000

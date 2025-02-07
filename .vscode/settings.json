@@ -1,0 +1,47 @@
+{
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "editor.insertSpaces": true,
+  "editor.tabSize": 4,
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+  "notebook.formatOnSave.enabled": true,
+  "notebook.codeActionsOnSave": {
+    "notebook.source.fixAll": "explicit",
+    "notebook.source.organizeImports": "explicit"
+  },
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestArgs": [".", "--color=no"],
+  "files.associations": {
+    "**/*.html": "html",
+    "**/templates/**/*.html": "django-html",
+    "**/templates/**/*.txt": "django-txt",
+    "**/frontend/css/**/*.css": "tailwindcss",
+    "**/*.env": "properties"
+  },
+  "[html][django-html]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file"
+  },
+  "standard.validate": [
+    "javascript",
+    {
+      "language": "html",
+      "autoFix": true
+    }
+  ],
+  "standard.options": {
+    "plugins": ["html"]
+  },
+  "[javascript][css][yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

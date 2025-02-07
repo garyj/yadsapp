@@ -1,0 +1,51 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+TIMEOUT=180 # exit with an error if Postgres is not ready in 3 minutes.
+END_TIME=$((SECONDS + TIMEOUT))
+
+if [ -z "$DATABASE_URL" ]; then
+    echo "Error: DATABASE_URL is not set." >&2
+    exit 1
+fi
+
+postgres_ready() {
+    python <<END
+import sys
+
+import psycopg
+
+try:
+    psycopg.connect(
+        "${DATABASE_URL}",
+        connect_timeout=10,
+    )
+except psycopg.OperationalError:
+    sys.exit(-1)
+
+sys.exit(0)
+
+END
+}
+
+# shellcheck disable=SC2001
+scrubbed_url=$(echo "$DATABASE_URL" | sed 's/postgres:\(.*\)@/postgres:REMOVED@/')
+until postgres_ready; do
+    if (($SECONDS > END_TIME)); then
+        printf >&2 "Unable to connect to Postgres within %d seconds, exiting\n" "$TIMEOUT"
+        exit 1
+    fi
+    printf >&2 "Waiting for PostgreSQL on $scrubbed_url for  %d seconds...\n" "$SECONDS"
+    sleep 1
+done
+printf >&2 "PostgreSQL is available at: %s\n" "$scrubbed_url"
+
+# Apply databases migrations after the database is ready
+# We can take this out to a pre-deployment jobs in for example DigitalOcean App Platform
+echo "Migrating database..."
+python manage.py migrate
+
+exec "$@"

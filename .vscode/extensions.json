@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "charliermarsh.ruff",
+    "esbenp.prettier-vscode",
+    "monosans.djlint",
+    "ms-python.vscode-pylance",
+    "standard.vscode-standard",
+    "tamasfe.even-better-toml"
+  ]
+}

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+# Disabled below as they are run as Jobs in DigitalOcean App Platform
+# When we go back to AWS we may have to re-enable them
+# python manage.py migrate
+# python manage.py collectstatic --noinput -v 3
+
+# /usr/local/bin/gunicorn config.wsgi --bind 0.0.0.0:5000 --chdir=/app --access-logfile - --error-logfile -
+# /usr/local/bin/gunicorn config.asgi -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:5000 --chdir=/app --access-logfile - --error-logfile -
+uvicorn --host 0.0.0.0 --port 8000 --lifespan off --log-level warning config.asgi:application
