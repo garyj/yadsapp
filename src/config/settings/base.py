@@ -51,7 +51,6 @@ DJANGO_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.messages',
     'django.contrib.sessions',
-    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 ]
 
@@ -60,7 +59,6 @@ THIRD_PARTY_APPS = [
     'django_htmx',
     'django_extensions',
     'template_partials.apps.SimpleAppConfig',
-    'unique_user_email',
 ]
 
 # Our apps
@@ -74,7 +72,6 @@ INSTALLED_APPS = [*DJANGO_APPS, *THIRD_PARTY_APPS, *LOCAL_APPS]
 # https://docs.djangoproject.com/en/5.1/topics/http/middleware/
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -195,14 +192,7 @@ USE_TZ = True
 STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (str(BASE_DIR / 'static' / 'dist'),)
-STORAGES = {
-    'default': {
-        'BACKEND': 'django.core.files.storage.FileSystemStorage',
-    },
-    'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage',
-    },
-}
+
 
 # User uploaded static files
 # https://docs.djangoproject.com/en/5.1/ref/settings/#media-url
