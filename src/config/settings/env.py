@@ -3,10 +3,12 @@ Keeping this module separate from Django Settings so that we can import it in ot
 settings without having to import all of Django settings.
 """
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class EnvSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_file='.env')
+
     DATABASE_URL: str
     SECRET_KEY: str
 
@@ -16,9 +18,6 @@ class EnvSettings(BaseSettings):
 
     EXTRA_ALLOWED_HOSTS: list[str] = []
     CSRF_TRUSTED_ORIGINS: list[str] = []
-
-    class Config:
-        env_file = '.env'
 
 
 pydenset = EnvSettings()  # pyright: ignore[reportCallIssue]
