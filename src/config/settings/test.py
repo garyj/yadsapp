@@ -11,4 +11,4 @@ if not os.getenv('SECRET_KEY'):
 if not os.getenv('DATABASE_URL'):
     os.environ['DATABASE_URL'] = 'sqlite:///db.sqlite3'
 
-from config.settings.base import *  # noqa: F403
+from config.settings.base import *
