@@ -2,7 +2,7 @@ name: Deploy Django Template
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   deploy-template:
