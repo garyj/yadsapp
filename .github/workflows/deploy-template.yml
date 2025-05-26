@@ -67,15 +67,15 @@ jobs:
 
           # Get git diff for context
           DIFF_OUTPUT=$(git diff --staged --name-status)
-          DIFF_CONTENT=$(git diff --staged | head -c 3000)
+          DIFF_CONTENT=$(git diff --staged -- . ':!uv.lock' | head -c 3000) # ignore uv.lock as it can overflow the context window
 
           # Save the template for commit messages
           mkdir -p $(llm templates path)
-          cp ../template-generator/commit-template.yaml $(llm templates path)/commit_msg
+          cp ../template-generator/commit-template.yaml $(llm templates path)/commit_msg.yaml
 
           # Generate commit message using llm template
           if [ -n "$OPENAI_API_KEY" ]; then
-            COMMIT_MSG=$(uv tool run llm -m "$COMMIT_MESSAGE_MODEL" -t commit_msg -p files_changed $DIFF_OUTPUT -p diff_content $DIFF_CONTENT -p source_commit "$SOURCE_COMMIT" -p source_ref "$SOURCE_REF" 2>/dev/null)
+            COMMIT_MSG=$(uv tool run llm -m "$COMMIT_MESSAGE_MODEL" -t commit_msg -p files_changed "$DIFF_OUTPUT" -p diff_content "$DIFF_CONTENT" -p source_commit "$SOURCE_COMMIT" -p source_ref "$SOURCE_REF" 2>&1)
 
             # Add source commit reference if not already included
             if [[ "$COMMIT_MSG" != *"${SOURCE_COMMIT:0:8}"* ]]; then
@@ -86,6 +86,10 @@ jobs:
             COMMIT_MSG="Update Django project template"$'\n\n'"Source: ${SOURCE_COMMIT:0:8}"$'\n'"Ref: $SOURCE_REF"
           fi
 
-          # Commit with generated message
+          echo "Final commit message:"
+          echo "===================="
+          echo "$COMMIT_MSG"
+          echo "===================="
+
           git commit -m "$COMMIT_MSG"
           git push

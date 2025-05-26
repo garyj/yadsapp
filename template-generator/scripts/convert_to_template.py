@@ -26,6 +26,7 @@ EXCLUDE_PATTERNS = [
     'package-lock.json',
     '.ruff_cache',
     'template-generator',  # Don't include the template generator itself
+    'template-output',  # Don't include the output directory
     'README.md',  # Root README.md is for this repo, not the template
 ]
 
