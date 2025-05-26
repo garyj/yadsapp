@@ -14,6 +14,19 @@ sources := "src packages"
         exit; \
     fi
 
+# Initialize the project with dependencies
+bootstrap:
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    if [ ! -f ".env" ]; then
+        cp .env.example .env
+        echo ".env created"
+    fi
+
+    just upgrade
+    docker compose -f compose.yaml build --pull
+
 # upgrade/install all dependencies defined in pyproject.toml
 @upgrade: check_uv
     uv sync --upgrade --all-extras
