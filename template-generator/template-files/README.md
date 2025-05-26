@@ -3,7 +3,7 @@
 
 A personal Django Starter project that I use to get started quickly with new Django Apps.
 
-This Django Template is is auto generated from [garyj/yadsapp](https://github.com/garyj/yadsapp)
+This Django Template is auto generated from [garyj/yadsapp](https://github.com/garyj/yadsapp)
 
 Inspired by [jefftriplett/django-startproject](https://github.com/jefftriplett/django-startproject)
 
