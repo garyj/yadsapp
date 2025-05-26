@@ -68,7 +68,7 @@ def replace_content(content: str, replacements: dict) -> str:
     return content
 
 
-def copy_and_convert_file(src: Path, dest: Path, replacements: dict):
+def copy_and_convert_file(src: Path, dest: Path, replacements: dict) -> None:
     """Copy a file and apply template conversions."""
     dest.parent.mkdir(parents=True, exist_ok=True)
 
@@ -80,12 +80,12 @@ def copy_and_convert_file(src: Path, dest: Path, replacements: dict):
     ]:
         # Text files - apply replacements
         try:
-            with open(src, encoding='utf-8') as f:
+            with src.open(encoding='utf-8') as f:
                 content = f.read()
 
             content = replace_content(content, replacements)
 
-            with open(dest, 'w', encoding='utf-8') as f:
+            with dest.open('w', encoding='utf-8') as f:
                 f.write(content)
         except UnicodeDecodeError:
             # If file can't be decoded as text, copy as binary
@@ -95,7 +95,7 @@ def copy_and_convert_file(src: Path, dest: Path, replacements: dict):
         shutil.copy2(src, dest)
 
 
-def main():
+def main() -> None:
     """Main conversion function."""
     source_dir = Path()
     output_dir = Path('template-output')
@@ -158,27 +158,27 @@ def main():
     # Copy README.md with replacements
     src_readme = template_files_dir / 'README.md'
     if src_readme.exists():
-        with open(src_readme, encoding='utf-8') as f:
+        with src_readme.open(encoding='utf-8') as f:
             readme_content = f.read()
         readme_content = replace_content(readme_content, replacements)
-        with open(output_dir / 'README.md', 'w', encoding='utf-8') as f:
+        with (output_dir / 'README.md').open('w', encoding='utf-8') as f:
             f.write(readme_content)
 
     # Copy .env.example with replacements
     src_env = template_files_dir / '.env.example'
     if src_env.exists():
-        with open(src_env, encoding='utf-8') as f:
+        with src_env.open(encoding='utf-8') as f:
             env_content = f.read()
         env_content = replace_content(env_content, replacements)
-        with open(output_dir / '.env.example', 'w', encoding='utf-8') as f:
+        with (output_dir / '.env.example').open('w', encoding='utf-8') as f:
             f.write(env_content)
 
     print(f'✅ Django template created in {output_dir}')
     print('\nTemplate structure:')
-    for root, dirs, files in os.walk(output_dir):
+    for root, _dirs, files in os.walk(output_dir):
         level = root.replace(str(output_dir), '').count(os.sep)
         indent = ' ' * 2 * level
-        print(f'{indent}{os.path.basename(root)}/')
+        print(f'{indent}{Path(root).name}/')
         subindent = ' ' * 2 * (level + 1)
         for file in files:
             print(f'{subindent}{file}')
