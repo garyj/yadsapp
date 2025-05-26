@@ -31,7 +31,7 @@ jobs:
       - name: Checkout template repository
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository_owner }}/django-project-template
+          repository: ${{ github.repository_owner }}/yads
           token: ${{ secrets.TEMPLATE_REPO_TOKEN }}
           path: template-repo
           fetch-depth: 0
