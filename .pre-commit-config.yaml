@@ -31,13 +31,14 @@ repos:
       - id: django-upgrade
         args: [--target-version, '5.1']
 
-  - repo: local
-    hooks:
-      - id: pyright
-        name: pyright
-        language: system
-        types: [python]
-        entry: uv run pyright
+  # - repo: local
+  #   hooks:
+  #     - id: pyright
+  #       name: pyright
+  #       language: system
+  #       types: [python]
+  #       entry: uv run pyright
+  #       pass_filenames: false # pyright runs for the entire project, it can't run for single files
 
   - repo: https://github.com/adamchainz/djade-pre-commit
     rev: '1.4.0'
