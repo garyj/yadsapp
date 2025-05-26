@@ -23,7 +23,6 @@ EXCLUDE_PATTERNS = [
     'media',
     '.env',
     '.env.local',
-    'package-lock.json',
     '.ruff_cache',
     'template-generator',  # Don't include the template generator itself
     'template-output',  # Don't include the output directory
