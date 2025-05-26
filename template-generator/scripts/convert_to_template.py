@@ -30,24 +30,9 @@ EXCLUDE_PATTERNS = [
     'README.md',  # Root README.md is for this repo, not the template
 ]
 
-# Files that need content replacement
-TEMPLATE_FILES = [
-    'pyproject.toml',
-    'uv.lock',
-    'package.json',
-    'justfile',
-    'compose.yaml',
-    'compose-prod.yaml',
-    'docker/Dockerfile',
-    'vite.config.js',
-    'CLAUDE.md',
-    'README.md',
-]
-
 # Directory and file renames
 RENAMES = {
     'src/yads': 'src/{{ project_name }}',
-    'yads-dev': '{{ project_name }}-dev',
 }
 
 
@@ -109,16 +94,6 @@ def main() -> None:
     # Content replacements
     replacements = {
         'yads': '{{ project_name }}',
-        'yads-dev': '{{ project_name }}-dev',
-        'YADS': '{{ project_name|upper }}',
-        'Yads': '{{ project_name|title }}',
-        # Docker image name
-        'yads/web': '{{ project_name }}/web',
-        'yads/vite': '{{ project_name }}/vite',
-        # Database name
-        'POSTGRES_DB=yads': 'POSTGRES_DB={{ project_name }}',
-        # Extra hosts
-        'yads.local': '{{ project_name }}.local',
     }
 
     # Walk through source directory
@@ -151,19 +126,10 @@ def main() -> None:
     # Copy template files from template-generator/template-files/
     template_files_dir = Path('template-generator/template-files')
 
-    # Copy project_template.json
-    src_template_json = template_files_dir / 'project_template.json'
-    if src_template_json.exists():
-        shutil.copy2(src_template_json, output_dir / 'project_template.json')
-
-    # Copy README.md with replacements
+    # Copy README.md (DO NOT replace content)
     src_readme = template_files_dir / 'README.md'
     if src_readme.exists():
-        with src_readme.open(encoding='utf-8') as f:
-            readme_content = f.read()
-        readme_content = replace_content(readme_content, replacements)
-        with (output_dir / 'README.md').open('w', encoding='utf-8') as f:
-            f.write(readme_content)
+        shutil.copy2(src_readme, output_dir / 'README.md')
 
     # Copy .env.example with replacements
     src_env = template_files_dir / '.env.example'
