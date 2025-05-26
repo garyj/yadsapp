@@ -31,7 +31,7 @@ EXCLUDE_PATTERNS = [
 
 # Directory and file renames
 RENAMES = {
-    'src/yads': 'src/{{ project_name }}',
+    'src/yads': 'src/project_name',
 }
 
 
