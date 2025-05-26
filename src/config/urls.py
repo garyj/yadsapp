@@ -1,5 +1,5 @@
 # URL Configuration
-# https://docs.djangoproject.com/en/5.1/topics/http/urls/
+# https://docs.djangoproject.com/en/5.2/topics/http/urls/
 
 from django.conf import settings
 from django.conf.urls.static import static

@@ -4,7 +4,7 @@ This is a modern Django project template featuring HTMX, Tailwind CSS, Alpine.js
 
 ## Technology Stack
 
-- **Backend**: Django 5.1+, Python 3.13, PostgreSQL, HTMX
+- **Backend**: Django 5.2+, Python 3.13, PostgreSQL, HTMX
 - **Frontend**: Vite, Tailwind CSS v4, Alpine.js, HTMX
 - **Tools**: uv (dependency management), ruff (linting/formatting), pytest (testing), just (task runner)
 - **Infrastructure**: Docker, Docker Compose
