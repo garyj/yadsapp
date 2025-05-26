@@ -9,7 +9,7 @@ Inspired by [jefftriplett/django-startproject](https://github.com/jefftriplett/d
 
 ## 🚩 Core Features
 
-- Django 2+ with Python 3.13
+- Django 5.2+ with Python 3.13
 - HTMX for seamless server-side interactions
 - Tailwind CSS v4 for modern styling
 - Alpine.js for lightweight reactivity
