@@ -35,7 +35,7 @@ Inspired by [jefftriplett/django-startproject](https://github.com/jefftriplett/d
 ```bash
 # Create a new project
 uv run --with=django django-admin startproject \
-    --extension=ini,py,toml,yaml,yml,md \
+    --extension=ini,py,toml,yaml,yml,md,json \
     --template=https://github.com/garyj/yads/archive/main.zip \
     myproject
 
