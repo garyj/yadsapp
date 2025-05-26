@@ -38,12 +38,14 @@ sources := "src packages"
 @manage *ARGS: check_uv
     docker compose run --rm web python manage.py {{ ARGS }}
 
+# check code quality with ruff and npm linters
 @lint: check_uv
     uv run ruff check {{ sources }}
     uv run ruff format --check {{ sources }}
     npm run lint:standard
     npm run lint:prettier
 
+# auto-fix code formatting with ruff and npm formatters
 @format: check_uv
     uv run ruff check --fix --unsafe-fixes {{ sources }}
     uv run ruff format {{ sources }}
@@ -82,7 +84,7 @@ sources := "src packages"
 @restart:
     docker compose restart
 
-# rebuilds and starts docker-compose services
+# rebuild and restart all docker-compose services
 @rebuild: check_uv stop build start logs
 
 
@@ -90,17 +92,22 @@ sources := "src packages"
 # Below targets use the compose-prod.yaml which tries to get closer to production
 ########################################################################################################################
 
+# clean up production environment (remove volumes and orphans)
 @prodclean:
     docker compose -f compose-prod.yaml down -v --remove-orphans
 
+# start production environment services in detached mode
 @prodstart:
     docker compose -f compose-prod.yaml up -d
 
+# build and start production environment with forced recreation
 @prodbuild:
     docker compose -f compose-prod.yaml up -d --build --force-recreate
 
+# follow logs from production environment services
 @prodlogs:
     docker compose -f compose-prod.yaml logs -f
 
+# stop production environment services
 @prodstop:
     docker compose -f compose-prod.yaml down
