@@ -48,7 +48,7 @@ jobs:
         if: success()
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          COMMIT_MESSAGE_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o' }}
+          COMMIT_MESSAGE_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o-mini' }}
           SOURCE_COMMIT: ${{ github.sha }}
           SOURCE_REF: ${{ github.ref }}
         run: |
@@ -69,6 +69,7 @@ jobs:
           DIFF_CONTENT=$(git diff --staged | head -c 3000)
 
           # Save the template for commit messages
+          mkdir -p $(llm templates path)
           cp ../template-generator/commit-template.yaml $(llm templates path)/commit_msg
 
           # Generate commit message using llm template
