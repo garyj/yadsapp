@@ -41,14 +41,7 @@ uv run --with=django django-admin startproject \
 
 cd myproject
 
-# Set up environment
-cp .env.example .env
-# Edit .env with your database and settings
-
-# Bootstrap the project
-just upgrade  # Install all dependencies
-just migrate  # Set up database
-just          # Start development server
+just bootstrap
 ```
 
 ## Usage
