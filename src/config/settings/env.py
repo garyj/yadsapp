@@ -12,12 +12,14 @@ class EnvSettings(BaseSettings):
     DATABASE_URL: str
     SECRET_KEY: str
 
-    DEBUG: bool = False
-    USE_VITE: bool = False
-    INTERNAL_IPS: list[str] = []
-
     EXTRA_ALLOWED_HOSTS: list[str] = []
     CSRF_TRUSTED_ORIGINS: list[str] = []
+
+    # Debug & Development Settings
+    DEBUG: bool = False
+    INTERNAL_IPS: list[str] = []
+    USE_VITE: bool = False
+    VITE_URL: str = 'http://localhost:5173'
 
 
 pydenset = EnvSettings()  # pyright: ignore[reportCallIssue]

@@ -16,7 +16,7 @@ export default defineConfig(({ command, mode }) => ({
     hot: true,
     // https://vitejs.dev/guide/performance#warm-up-frequently-used-files
     warmup: {
-      clientFiles: [join(INPUT_DIR, 'project.css'), join(INPUT_DIR, 'project.js')]
+      clientFiles: [join(INPUT_DIR, 'css/project.css'), join(INPUT_DIR, 'js/project.js')]
     }
   },
   resolve: {
@@ -42,8 +42,13 @@ export default defineConfig(({ command, mode }) => ({
     sourcemap: true,
     rollupOptions: {
       input: {
-        'css/project': join(INPUT_DIR, 'project.css'),
-        'js/project': join(INPUT_DIR, 'project.js')
+        'css/project': join(INPUT_DIR, 'css/project.css'),
+        'js/project': join(INPUT_DIR, 'js/project.js')
+      },
+      output: { // do not add hashes to filenames as this is done by Django ManifestStaticFilesStorage
+        entryFileNames: '[name].js',
+        chunkFileNames: '[name].js',
+        assetFileNames: '[name].[ext]'
       }
     }
   }

@@ -1,4 +1,4 @@
-{% load core_tags django_htmx %}
+{% load django_htmx %}
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE }}">
   <head>
@@ -16,17 +16,17 @@
     </title>
     {% if USE_VITE %}
       <script
-        src="http://localhost:5173/static/@vite/client"
+        src="{{ VITE_URL }}/static/@vite/client"
         type="module"></script>
     {% endif %}
     {% block css %}
       <link
-        href="{% static 'project.css' %}"
+        href="{% static 'css/project.css' %}"
         rel="stylesheet" />
     {% endblock css %}
     {% block javascript %}
       <script
-        src="{% static 'project.js' %}"
+        src="{% static 'js/project.js' %}"
         type="module"></script>
     {% endblock javascript %}
     {% block extra_head %}

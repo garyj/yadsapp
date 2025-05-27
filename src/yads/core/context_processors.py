@@ -3,9 +3,16 @@ from typing import Any
 from django.conf import settings
 from django.http import HttpRequest
 
+from config.settings.env import pydenset
+
 
 def common(_: HttpRequest) -> dict[str, Any]:
-    return {
+    context = {
         'DEBUG': settings.DEBUG,
-        'USE_VITE': settings.USE_VITE,
     }
+
+    if settings.DEBUG:
+        context['USE_VITE'] = pydenset.USE_VITE
+        context['VITE_URL'] = pydenset.VITE_URL
+
+    return context

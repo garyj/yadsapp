@@ -25,7 +25,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 # https://docs.djangoproject.com/en/5.1/ref/settings/#debug
 DEBUG = pydenset.DEBUG
-USE_VITE = pydenset.USE_VITE
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # https://docs.djangoproject.com/en/5.1/ref/settings/#secret-key
@@ -127,6 +126,7 @@ TEMPLATES = [
                 'django.templatetags.i18n',
                 # "django.templatetags.l10n",
                 'django.templatetags.static',
+                'yads.core.templatetags.core_tags',  # overrides Django's static tag taking into account Vite
                 # "django.templatetags.tz"
                 'heroicons.templatetags.heroicons',
             ],
