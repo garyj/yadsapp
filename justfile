@@ -23,12 +23,18 @@ bootstrap: prereq
         echo ".env created"
     fi
 
-    just upgrade
+    just install
     docker compose -f compose.yaml build --pull
+
+# install all dependencies defined in pyproject.toml and package.json
+install:
+    uv sync --all-extras
+    npm install
 
 # upgrade/install all dependencies defined in pyproject.toml
 upgrade:
-    uv sync --upgrade --all-extras
+    uv lock --upgrade
+    npm upgrade
 
 # bash shell into the running web container
 bash:
