@@ -11,7 +11,7 @@ services:
     image: yads/web-prod
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/yads
-      - DEBUG=True
+      - DEBUG=False
       - DJANGO_SETTINGS_MODULE=config.settings.local
       - SECRET_KEY=not_so_secret
       - USE_VITE=False
