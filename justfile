@@ -4,18 +4,17 @@ set dotenv-load
 sources := "src packages"
 
 # default start docker compose in attached mode
-@_default:
+_default:
     docker compose up
 
 [private]
-@check_uv:
-    if ! command -v uv &> /dev/null; then \
-        echo "uv could not be found. Exiting."; \
-        exit; \
-    fi
+prereq:
+    @uv --version || echo 'Please install UV: https://docs.astral.sh/uv/getting-started/installation/'
+    @npm --version || echo 'Please install npm: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm'
+    @pre-commit --version || echo 'Please install pre-commit: `uv tool install pre-commit --with pre-commit-uv` or https://pre-commit.com/#install'
 
 # Initialize the project with dependencies
-bootstrap:
+bootstrap: prereq
     #!/usr/bin/env bash
     set -euo pipefail
 
@@ -28,77 +27,77 @@ bootstrap:
     docker compose -f compose.yaml build --pull
 
 # upgrade/install all dependencies defined in pyproject.toml
-@upgrade: check_uv
+upgrade:
     uv sync --upgrade --all-extras
 
 # bash shell into the running web container
-@bash:
+bash:
     docker compose exec web bash
 
 # run database migrations
-@migrate *ARGS: check_uv
+migrate *ARGS:
     docker compose run --rm web python manage.py migrate {{ ARGS }}
 
 # create database migrations
-@migrations *ARGS: check_uv
+migrations *ARGS:
     docker compose run --rm web python manage.py makemigrations {{ ARGS }}
 
 # start interactive shell
-@shell *ARGS: check_uv
+shell *ARGS:
     docker compose run --rm web python manage.py shell {{ ARGS }}
 
 # start src/manage.py for all cases not covered by other commands
-@manage *ARGS: check_uv
+manage *ARGS:
     docker compose run --rm web python manage.py {{ ARGS }}
 
 # check code quality with ruff and npm linters
-@lint: check_uv
+lint:
     uv run ruff check {{ sources }}
     uv run ruff format --check {{ sources }}
     npm run lint:standard
     npm run lint:prettier
 
 # auto-fix code formatting with ruff and npm formatters
-@format: check_uv
+format:
     uv run ruff check --fix --unsafe-fixes {{ sources }}
     uv run ruff format {{ sources }}
     npm run format:standard
     npm run format:prettier
 
 # run pre-commit rules on all files
-@pc: check_uv
+pc:
     uv run --with pre-commit-uv pre-commit run --all-files
 
 # run test suite
-@test *ARGS: check_uv
+test *ARGS:
     uv run pytest {{ ARGS }}
 
 # run test suite with coverage
-@coverage *ARGS: check_uv
+coverage *ARGS:
     uv run pytest --cov --cov-report=html --cov-report=term {{ ARGS }}
 
 # start docker-compose services
-@start:
+start:
     docker compose up -d
 
 # build docker-compose services
-@build:
+build:
     docker compose up -d --build
 
 # show logs of docker-compose services
-@logs:
+logs:
     docker compose logs -f
 
 # stop docker-compose services
-@stop:
+stop:
     docker compose down
 
 # restart docker-compose services
-@restart:
+restart:
     docker compose restart
 
 # rebuild and restart all docker-compose services
-@rebuild: check_uv stop build start logs
+rebuild:  stop build start logs
 
 
 ########################################################################################################################
@@ -106,21 +105,21 @@ bootstrap:
 ########################################################################################################################
 
 # clean up production environment (remove volumes and orphans)
-@prodclean:
+prodclean:
     docker compose -f compose-prod.yaml down -v --remove-orphans
 
 # start production environment services in detached mode
-@prodstart:
+prodstart:
     docker compose -f compose-prod.yaml up -d
 
 # build and start production environment with forced recreation
-@prodbuild:
+prodbuild:
     docker compose -f compose-prod.yaml up -d --build --force-recreate
 
 # follow logs from production environment services
-@prodlogs:
+prodlogs:
     docker compose -f compose-prod.yaml logs -f
 
 # stop production environment services
-@prodstop:
+prodstop:
     docker compose -f compose-prod.yaml down
