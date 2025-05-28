@@ -86,6 +86,9 @@ jobs:
             COMMIT_MSG="Update Django project template"$'\n\n'"Source: ${SOURCE_COMMIT:0:8}"$'\n'"Ref: $SOURCE_REF"
           fi
 
+          # Append AI generation note
+          COMMIT_MSG="${COMMIT_MSG}"$'\n\n'"This commit message was generated entirely by AI and has not been reviewed."
+
           echo "Final commit message:"
           echo "===================="
           echo "$COMMIT_MSG"
