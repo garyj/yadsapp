@@ -2,7 +2,7 @@
   "name": "yads",
   "private": true,
   "version": "0.1.0",
-  "author": "Gary Jarrel",
+  "author": "",
   "type": "module",
   "engines": {
     "node": "22"
