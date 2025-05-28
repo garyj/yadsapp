@@ -43,6 +43,44 @@ Inspired by [jefftriplett/django-startproject](https://github.com/jefftriplett/d
 - Hot reload for Python and frontend files
 - VS Code configuration included
 
+## 📁 Project Structure
+
+```tree
+{{ project_name }}/
+├── src/                          # Main Django application
+│   ├── config/                   # Django configuration
+│   │   ├── settings/             # Environment-specific settings
+│   │   │   ├── base.py           # Base settings
+│   │   │   ├── local.py          # Development settings
+│   │   │   ├── production.py     # Production settings
+│   │   │   └── env.py            # Pydantic environment settings
+│   │   ├── urls.py               # Root URL configuration
+│   │   ├── wsgi.py               # WSGI application
+│   │   └── asgi.py               # ASGI application
+│   ├── frontend/                 # Frontend assets
+│   │   ├── project.css           # Main CSS file (Tailwind)
+│   │   └── project.js            # Main JS file (Alpine.js + HTMX)
+│   ├── templates/                # Django templates
+│   │   └── base.html             # Base template
+│   ├── {{ project_name }}/       # Django apps
+│   │   └── core/                 # Core app with custom User model
+│   └── manage.py                 # Django management script
+├── docker/                       # Docker configuration
+│   ├── Dockerfile                # Multi-stage build
+│   ├── entrypoint                # Container entrypoint
+│   ├── local/                    # Development scripts
+│   └── production/               # Production scripts
+├── packages/                     # Local Python packages (uv workspace)
+├── static/                       # Collected static files
+├── justfile                      # Task automation
+├── package.json                  # Node.js dependencies
+├── pyproject.toml                # Python project configuration
+├── vite.config.js                # Vite configuration
+├── compose.yaml                  # Development Docker Compose
+├── compose-prod.yaml             # Production Docker Compose
+└── CLAUDE.md                     # Development documentation
+```
+
 ## 📐 Vite Notes
 
 I don't use any 3rd party Django package for Vite. Vite is used as per the [backend
