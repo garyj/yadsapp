@@ -42,45 +42,87 @@ jobs:
           # Use rsync to sync changes while preserving .git
           rsync -av --delete --exclude='.git' template-output/ template-repo/
 
-          cd template-repo
+      - name: Stage changes and check for differences
+        id: check-changes
+        working-directory: template-repo
+        run: |
           git add .
 
-      - name: Generate commit message and push
-        if: success()
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected, proceeding with commit"
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Configure git
+        if: ${{ steps.check-changes.outputs.has_changes == 'true' }}
+        working-directory: template-repo
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Generate diff information for debugging
+        if: ${{ steps.check-changes.outputs.has_changes == 'true' }}
+        working-directory: template-repo
+        run: |
+          echo "=== FILES CHANGED ==="
+          git diff --staged --name-status
+
+          echo -e "\n=== DIFF SUMMARY ==="
+          git diff --staged --stat
+
+          echo -e "\n=== DIFF CONTENT ==="
+          git diff --staged -- . ':!uv.lock'
+          echo -e "\n"
+
+      - name: Setup LLM template
+        if: ${{ steps.check-changes.outputs.has_changes == 'true' }}
+        id: setup-template
+        run: |
+          mkdir -p $(llm templates path)
+          cp template-generator/commit-template.yaml $(llm templates path)/commit_msg.yaml
+
+      - name: Generate commit message
+        if: ${{ steps.check-changes.outputs.has_changes == 'true' }}
+        id: generate-message
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           COMMIT_MESSAGE_MODEL: ${{ vars.LLM_MODEL || 'gpt-4o-mini' }}
           SOURCE_COMMIT: ${{ github.sha }}
           SOURCE_REF: ${{ github.ref }}
+        working-directory: template-repo
         run: |
-          cd template-repo
-
-          # Check if there are changes to commit
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-            exit 0
-          fi
-
-          # Configure git
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
           # Get git diff for context
           DIFF_OUTPUT=$(git diff --staged --name-status)
-          DIFF_CONTENT=$(git diff --staged -- . ':!uv.lock' | head -c 3000) # ignore uv.lock as it can overflow the context window
-
-          # Save the template for commit messages
-          mkdir -p $(llm templates path)
-          cp ../template-generator/commit-template.yaml $(llm templates path)/commit_msg.yaml
+          DIFF_CONTENT=$(git diff --staged -- . ':!uv.lock')
 
           # Generate commit message using llm template
           if [ -n "$OPENAI_API_KEY" ]; then
+            echo "Generating commit message with LLM..."
+            echo "Using model: $COMMIT_MESSAGE_MODEL"
+
             COMMIT_MSG=$(uv tool run llm -m "$COMMIT_MESSAGE_MODEL" -t commit_msg -p files_changed "$DIFF_OUTPUT" -p diff_content "$DIFF_CONTENT" -p source_commit "$SOURCE_COMMIT" -p source_ref "$SOURCE_REF" 2>&1)
+
+            echo "LLM raw output:"
+            echo "--- START LLM OUTPUT ---"
+            echo "$COMMIT_MSG"
+            echo "--- END LLM OUTPUT ---"
+
+            if [ -z "$COMMIT_MSG" ]; then
+              echo "LLM command failed returning empty message, using fallback"
+              COMMIT_MSG="Update Django project template"$'\n\n'"Source: ${SOURCE_COMMIT:0:8}"$'\n'"Ref: $SOURCE_REF"
+            else
+              COMMIT_MSG="$COMMIT_MSG"$'\n\n'"This commit message was generated entirely by AI and has not been reviewed."
+            fi
 
             # Add source commit reference if not already included
             if [[ "$COMMIT_MSG" != *"${SOURCE_COMMIT:0:8}"* ]]; then
               COMMIT_MSG="$COMMIT_MSG"$'\n\n'"Source: ${SOURCE_COMMIT:0:8}"
             fi
+
           else
             echo "Warning: OPENAI_API_KEY not set, using fallback commit message"
             COMMIT_MSG="Update Django project template"$'\n\n'"Source: ${SOURCE_COMMIT:0:8}"$'\n'"Ref: $SOURCE_REF"
@@ -91,5 +133,30 @@ jobs:
           echo "$COMMIT_MSG"
           echo "===================="
 
-          git commit -m "$COMMIT_MSG"
+          # Save commit message to output
+          {
+            echo "commit_message<<EOF"
+            echo "$COMMIT_MSG"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      - name: Commit and push changes
+        if: ${{ steps.check-changes.outputs.has_changes == 'true' }}
+        working-directory: template-repo
+        run: |
+          COMMIT_MESSAGE="${{ steps.generate-message.outputs.commit_message }}"
+
+          # Create a temporary file for the commit message to avoid shell interpretation issues
+          echo "$COMMIT_MESSAGE" > /tmp/commit_message.txt
+
+          git commit -F /tmp/commit_message.txt
           git push
+
+          # Output commit message to GitHub step summary
+          {
+            echo "### Pushed with Commit Message"
+            echo
+            echo '```'
+            echo "$COMMIT_MESSAGE"
+            echo '```'
+          } >> $GITHUB_STEP_SUMMARY
