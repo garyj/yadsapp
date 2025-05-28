@@ -43,5 +43,10 @@
   },
   "[javascript][css][yaml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": "CLAUDE.md"
+    }
+  ]
 }
