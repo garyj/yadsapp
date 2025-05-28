@@ -75,7 +75,7 @@ jobs:
           git diff --staged --stat
 
           echo -e "\n=== DIFF CONTENT ==="
-          git diff --staged -- . ':!uv.lock'
+          git diff --staged -- . ':!uv.lock' ':!package-lock.json'
           echo -e "\n"
 
       - name: Setup LLM template
@@ -97,7 +97,7 @@ jobs:
         run: |
           # Get git diff for context
           DIFF_OUTPUT=$(git diff --staged --name-status)
-          DIFF_CONTENT=$(git diff --staged -- . ':!uv.lock')
+          DIFF_CONTENT=$(git diff --staged -- . ':!uv.lock' ':!package-lock.json')
 
           # Generate commit message using llm template
           if [ -n "$OPENAI_API_KEY" ]; then
