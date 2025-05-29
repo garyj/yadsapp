@@ -38,7 +38,7 @@ RENAMES = {
 def should_exclude(path: Path, exclude_patterns: list) -> bool:
     """Check if a path should be excluded based on patterns. Explicit allows .gitkeep files."""
     path_str = str(path)
-    if path.name == '.gitkeep':
+    if path.name in {'.gitkeep', '.gitignore'}:
         return False
     for pattern in exclude_patterns:
         if pattern in path_str or path.name == pattern:
