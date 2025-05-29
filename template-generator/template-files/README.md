@@ -98,6 +98,7 @@ development](https://github.com/garyj/yads/blob/master/.env.example).
 # Create a new project
 uv run --with=django django-admin startproject \
     --extension=ini,py,toml,yaml,yml,md,json \
+    --exclude='' \
     --template=https://github.com/garyj/yads/archive/master.zip \
     myproject
 
