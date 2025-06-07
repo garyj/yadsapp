@@ -43,9 +43,4 @@ until postgres_ready; do
 done
 printf >&2 "PostgreSQL is available at: %s\n" "$scrubbed_url"
 
-# Apply databases migrations after the database is ready
-# We can take this out to a pre-deployment jobs in for example DigitalOcean App Platform
-echo "Migrating database..."
-python manage.py migrate
-
 exec "$@"
