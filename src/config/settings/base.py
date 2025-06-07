@@ -146,7 +146,6 @@ DATABASES = {'default': dj_database_url.parse(pydenset.DATABASE_URL)}
 # Authentication backends
 # https://docs.djangoproject.com/en/5.1/ref/settings/#authentication-backends
 AUTHENTICATION_BACKENDS = [
-    'unique_user_email.backend.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
