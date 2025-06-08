@@ -56,6 +56,10 @@ shell *ARGS:
 manage *ARGS:
     docker compose run --rm web python manage.py {{ ARGS }}
 
+# destroy all docker-compose services and remove volumes and orphans
+destroy:
+    docker compose down -v --remove-orphans
+
 # check code quality with ruff and npm linters
 lint:
     uv run ruff check {{ sources }}
