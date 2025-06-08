@@ -108,6 +108,7 @@ extend-select = [
 ignore = [
   "ANN002", # Ignore missing type annotations for *args
   "ANN003", # Ignore missing type annotations for **kwargs
+  "ANN201", # Missing return type annotation, easier when working with Ninja APIs.
   "ANN401", # Allow Any annotation (for example in Signals where the first argument is sender to annotate with Any)
   "ARG002", # In Django often required arguments such as `request` or `sender` to a function may not be accessed hence we ignore this rule
   "B027", # Allow non-abstract empty methods in abstract base classes
