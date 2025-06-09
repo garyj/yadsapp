@@ -1,1 +1,14 @@
 from config.settings.base import *
+
+DEBUG = False
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_NAME = '__Secure-sessionid'
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_NAME = '__Secure-csrftoken'
+SECURE_HSTS_SECONDS = 60
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+ADMIN_URL = pydenset.ADMIN_URL

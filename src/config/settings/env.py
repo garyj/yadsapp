@@ -15,6 +15,8 @@ class EnvSettings(BaseSettings):
     EXTRA_ALLOWED_HOSTS: list[str] = []
     CSRF_TRUSTED_ORIGINS: list[str] = []
 
+    ADMIN_URL: str = 'admin'
+
     # Debug & Development Settings
     DEBUG: bool = False
     INTERNAL_IPS: list[str] = []
