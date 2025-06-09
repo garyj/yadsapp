@@ -109,6 +109,11 @@ restart:
 # rebuild and restart all docker-compose services
 rebuild:  stop build start logs
 
+# Create a superuser for the Django application
+superuser:
+	docker compose run -e DJANGO_SUPERUSER_PASSWORD=a --rm web \
+	python manage.py createsuperuser --noinput \
+	--username a --email="a@a.com.au"
 
 ########################################################################################################################
 # Below targets use the compose-prod.yaml which tries to get closer to production
