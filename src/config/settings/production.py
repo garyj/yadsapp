@@ -12,3 +12,15 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
 ADMIN_URL = pydenset.ADMIN_URL
+
+# use Whitenoise in Prod until such time we move to a CDN
+sec_middleware_index = MIDDLEWARE.index('django.middleware.security.SecurityMiddleware')
+MIDDLEWARE.insert(sec_middleware_index + 1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+STORAGES = {
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+    },
+}
