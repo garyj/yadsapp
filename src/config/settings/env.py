@@ -23,5 +23,8 @@ class EnvSettings(BaseSettings):
     USE_VITE: bool = False
     VITE_URL: str = 'http://localhost:5173'
 
+    # Sentry Settings
+    SENTRY_DSN: str = ''
+
 
 pydenset = EnvSettings()  # pyright: ignore[reportCallIssue]

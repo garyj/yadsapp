@@ -18,6 +18,22 @@ from config.settings.env import pydenset
 # https://github.com/typeddjango/django-stubs?tab=readme-ov-file#i-cannot-use-queryset-or-manager-with-type-annotations
 django_stubs_ext.monkeypatch()
 
+# Sentry Integration
+# https://docs.sentry.io/platforms/python/integrations/django/
+if pydenset.SENTRY_DSN:
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn=pydenset.SENTRY_DSN,
+        integrations=[DjangoIntegration(transaction_style='url')],
+        traces_sample_rate=0.1,  # 10% of transactions
+        send_default_pii=True,
+        # Set profiles_sample_rate to 1.0 to profile 100% of sampled transactions.
+        # We recommend adjusting this value in production.
+        profiles_sample_rate=1.0,
+    )
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
