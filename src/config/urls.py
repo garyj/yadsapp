@@ -11,7 +11,7 @@ urlpatterns = [
     # Out urls
     path('', TemplateView.as_view(template_name='base.html')),
     # Admin area
-    path('admin/', admin.site.urls),
+    path(settings.ADMIN_URL, admin.site.urls),
 ]
 
 if settings.DEBUG:

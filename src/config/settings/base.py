@@ -42,6 +42,8 @@ INTERNAL_IPS = pydenset.INTERNAL_IPS
 # https://docs.djangoproject.com/en/5.1/ref/settings/#csrf-trusted-origins
 CSRF_TRUSTED_ORIGINS = pydenset.CSRF_TRUSTED_ORIGINS
 
+ADMIN_URL = pydenset.ADMIN_URL
+
 # Application definition
 # https://docs.djangoproject.com/en/5.1/ref/settings/#installed-apps
 DJANGO_APPS = [
