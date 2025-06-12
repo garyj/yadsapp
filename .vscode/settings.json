@@ -23,7 +23,7 @@
     "**/templates/**/*.html": "django-html",
     "**/templates/**/*.txt": "django-txt",
     "**/frontend/css/**/*.css": "tailwindcss",
-    "**/*.env": "properties"
+    "**/*.env": "ini"
   },
   "[html][django-html]": {
     "editor.tabSize": 2,
