@@ -163,12 +163,14 @@ ban-relative-imports = "all"
   "ANN201", # Missing return type annotation
   "ANN202", # No return type
   "ARG001", # Allow unused arguments in tests
+  "FBT001", # Allow boolean positional arguments
+  "PGH003", # Use specific rule codes when ignoring type issues
+  "PLC0415", # ignore the requirements for imports to be at the top of the file
+  "PLR0913", # Too many arguments in function definition
+  "PLR0917", # Too many positional arguments
   "PLR2004", # Allow use of magic values eg:  assert len(form.errors) == 5
   "S101", # Allow Use of asserts
   "S105", # Don't complain on suspected use of secrets in tests
-  "PGH003", # Use specific rule codes when ignoring type issues
-  "PLR0913", # Too many arguments in function definition
-  "PLR0917", # Too many positional arguments
   "S105", # Hard coded secrets
   "SLF001", # Allow access to protected member
 ]
