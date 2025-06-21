@@ -1,0 +1,54 @@
+name: Test
+
+on:
+  push:
+    branches-ignore:
+      - 'master'
+      - 'main'
+    paths-ignore:
+      - '.devcontainer/**'
+      - '.tasks/**'
+      - '.vscode/**'
+      - 'CHANGELOG.md'
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Run linter
+        run: just lint
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - name: Python Tests
+        env:
+          DEBUG: true # need this to run tests with coverage
+        run: |
+          sudo apt-get update
+          sudo apt-get install binutils libproj-dev gdal-bin
+          just coverage

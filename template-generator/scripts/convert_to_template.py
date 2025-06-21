@@ -141,6 +141,22 @@ def main() -> None:
         with (output_dir / '.env.example').open('w', encoding='utf-8') as f:
             f.write(env_content)
 
+    # Copy the .github directory with replacements
+    src_github = template_files_dir / '.github'
+    if src_github.exists():
+        dest_github = output_dir / '.github'
+        for root, _dirs, files in os.walk(src_github):
+            root_path = Path(root)
+
+            for file in files:
+                src_file = root_path / file
+                # Calculate relative path from .github directory
+                rel_path = src_file.relative_to(src_github)
+                dest_file = dest_github / rel_path
+
+                # Copy and convert file with replacements
+                copy_and_convert_file(src_file, dest_file, replacements)
+
     print(f'✅ Django template created in {output_dir}')
     print('\nTemplate structure:')
     for root, _dirs, files in os.walk(output_dir):
