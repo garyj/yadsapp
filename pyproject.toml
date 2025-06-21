@@ -121,6 +121,7 @@ ignore = [
   "FBT003", # Allow boolean positional values in function calls, like `dict.get(... True)`
   "ISC001", # Allow string concatenation
   "PLR6301", # Allow unused self. In Django Class based views this will be common
+  "PLR0913", # Too many arguments in function definition, this is common in Django views and Ninja APIs
   "TD003", # Do not require an issue link in a todo comment
   "TRY003", # Allow for messages in exceptions https://docs.astral.sh/ruff/rules/raise-vanilla-args/
 ]
