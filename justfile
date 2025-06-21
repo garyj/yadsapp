@@ -30,6 +30,7 @@ bootstrap: prereq
 install:
     uv sync --all-extras
     npm install
+    pre-commit install
 
 # upgrade/install all dependencies defined in pyproject.toml
 upgrade:
