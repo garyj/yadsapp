@@ -142,10 +142,10 @@ jobs:
 
       - name: Commit and push changes
         if: ${{ steps.check-changes.outputs.has_changes == 'true' }}
+        env:
+          COMMIT_MESSAGE: ${{ steps.generate-message.outputs.commit_message }}
         working-directory: template-repo
         run: |
-          COMMIT_MESSAGE="${{ steps.generate-message.outputs.commit_message }}"
-
           # Create a temporary file for the commit message to avoid shell interpretation issues
           echo "$COMMIT_MESSAGE" > /tmp/commit_message.txt
 
