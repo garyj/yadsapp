@@ -4,16 +4,6 @@ description: Setup Python and Install Dependencies
 runs:
   using: 'composite'
   steps:
-    # - name: Dump GitHub context
-    #   shell: bash
-    #   env:
-    #     GITHUB_CONTEXT: ${{ toJson(github) }}
-    #   run: echo "$GITHUB_CONTEXT"
-
-    # - name: Dump Env
-    #   shell: bash
-    #   run: env
-
     - name: Install Just
       uses: extractions/setup-just@v3
 
