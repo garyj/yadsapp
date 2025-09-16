@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: v6.0.0
     hooks:
       - id: trailing-whitespace
       - id: check-yaml
@@ -12,7 +12,7 @@ repos:
       - id: check-json
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: 'v0.12.0'
+    rev: 'v0.13.0'
     hooks:
       - id: ruff
         types_or: [python, pyi]
@@ -26,7 +26,7 @@ repos:
       - id: pyupgrade
 
   - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.25.0
+    rev: 1.28.0
     hooks:
       - id: django-upgrade
 
@@ -40,7 +40,7 @@ repos:
   #       pass_filenames: false # pyright runs for the entire project, it can't run for single files
 
   - repo: https://github.com/adamchainz/djade-pre-commit
-    rev: '1.4.0'
+    rev: '1.6.0'
     hooks:
       - id: djade
 
