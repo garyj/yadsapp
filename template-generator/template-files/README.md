@@ -104,6 +104,9 @@ uv run --with=django django-admin startproject \
 
 cd myproject
 
+git init
+git commit --allow-empty -m "Initial commit"
+
 just bootstrap
 ```
 
