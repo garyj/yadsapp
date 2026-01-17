@@ -7,6 +7,7 @@ dependencies = [
   "django-extensions>=3.2.3",
   "django-htmx>=1.21.0",
   "django-stubs-ext>=5.2",
+  "django-template-partials>=25.3",
   "django[argon2]>=6",
   "heroicons>=2.9.0",
   "psycopg[c]>=3.2.4",
